@@ -9,11 +9,11 @@ from ..utils import (
     parse_duration,
     remove_end,
     unified_strdate,
-    urljoin,
     js_to_json,
     int_or_none,
     clean_html,
 )
+
 
 class NDTVIE(InfoExtractor):
     _VALID_URL = r'https?://(?:www|profit)\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
@@ -65,7 +65,7 @@ class NDTVIE(InfoExtractor):
                 'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
                 'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
                 r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-                #upload_date = playerdata_json['date']
+            # upload_date = playerdata_json['date']
             return {
                 'id': playerdata_json.get('id'),
                 'url': playerdata_json.get('media_mp4') or playerdata_json.get('media'),
@@ -77,6 +77,7 @@ class NDTVIE(InfoExtractor):
             }
         else:
             return {}
+
 
 class NDTVKhabarIE(InfoExtractor):
     _VALID_URL = r'https?://khabar\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
@@ -108,21 +109,22 @@ class NDTVKhabarIE(InfoExtractor):
         if playerdata_str is not None:
             playerdata_json = self._parse_json(js_to_json(playerdata_str), 'playerdata_json', fatal=False) or {}
             upload_date = unified_strdate(self._html_search_meta(
-                    'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
-                    'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
-                    r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-            #upload_date = playerdata_json['date']
+                'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
+                'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
+                r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
+            # upload_date = playerdata_json['date']
             return {
-                    'id': playerdata_json.get('id'),
-                    'url': playerdata_json.get('media_mp4') or playerdata_json.get('media'),
-                    'title': playerdata_json.get('title'),
-                    'description': playerdata_json.get('description'),
-                    'duration': int_or_none(playerdata_json.get('dur')),
-                    'upload_date': upload_date,
-                    'thumbnail': self._og_search_thumbnail(webpage)
+                'id': playerdata_json.get('id'),
+                'url': playerdata_json.get('media_mp4') or playerdata_json.get('media'),
+                'title': playerdata_json.get('title'),
+                'description': playerdata_json.get('description'),
+                'duration': int_or_none(playerdata_json.get('dur')),
+                'upload_date': upload_date,
+                'thumbnail': self._og_search_thumbnail(webpage)
             }
         else:
             return {}
+
 
 class NDTVAutoIE(InfoExtractor):
     _VALID_URL = r'https?://auto\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
@@ -153,7 +155,7 @@ class NDTVAutoIE(InfoExtractor):
                 'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
                 'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
                 r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-                #upload_date = playerdata_json['date']
+            # upload_date = playerdata_json['date']
             return {
                 'id': playerdata_json.get('id'),
                 'url': playerdata_json.get('filePath'),
@@ -165,6 +167,7 @@ class NDTVAutoIE(InfoExtractor):
             }
         else:
             return {}
+
 
 class NDTVMoviesFoodSwirlsterIE(InfoExtractor):
     _VALID_URL = r'https?://(?:movies|food|swirlster)\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
@@ -183,18 +186,18 @@ class NDTVMoviesFoodSwirlsterIE(InfoExtractor):
                 'thumbnail': r're:https?://.*\.jpg',
             }
         },
-       {
-           'url': 'https://food.ndtv.com/video-how-to-make-palak-pakoda-at-home-503346',
-           'info_dict': {
-               'id': '503346',
-               'ext': 'mp4',
-               'upload_date': '20190109',
-               'description': 'md5:b77c39049dbe185a6bd6c9cd94f3588f',
-               'title': 'How To Make Palak Pakoda At Home',
-               }
-       },
-       {
-           'url': 'https://swirlster.ndtv.com/video/how-to-make-friends-at-work-469324',
+        {
+            'url': 'https://food.ndtv.com/video-how-to-make-palak-pakoda-at-home-503346',
+            'info_dict': {
+                'id': '503346',
+                'ext': 'mp4',
+                'upload_date': '20190109',
+                'description': 'md5:b77c39049dbe185a6bd6c9cd94f3588f',
+                'title': 'How To Make Palak Pakoda At Home',
+            }
+        },
+        {
+            'url': 'https://swirlster.ndtv.com/video/how-to-make-friends-at-work-469324',
             'info_dict': {
                 'id': '469324',
                 'ext': 'mp4',
@@ -202,7 +205,7 @@ class NDTVMoviesFoodSwirlsterIE(InfoExtractor):
                 'description': 'Ladies, we just made making friends at work way simpler for you!',
                 'title': 'How To Make Friends At Work!',
             }
-       }
+        }
     ]
 
     def _real_extract(self, url):
@@ -216,36 +219,37 @@ class NDTVMoviesFoodSwirlsterIE(InfoExtractor):
         if playerdata_str is not None:
             playerdata_json = self._parse_json(js_to_json(playerdata_str), 'playerdata_json', fatal=False) or {}
             upload_date = unified_strdate(self._html_search_meta(
-                    'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
-                    'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
-                    r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-            #upload_date = playerdata_json['date']
+                'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
+                'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
+                r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
+            # upload_date = playerdata_json['date']
             return {
-                    'id': playerdata_json.get('id'),
-                    'url': playerdata_json.get('media'),
-                    'title': compat_urllib_parse_unquote_plus(playerdata_json.get('title')),
-                    'description': compat_urllib_parse_unquote_plus(playerdata_json.get('description')),
-                    'duration': int_or_none(playerdata_json.get('dur')),
-                    'upload_date': upload_date,
-                    'thumbnail': self._og_search_thumbnail(webpage)
+                'id': playerdata_json.get('id'),
+                'url': playerdata_json.get('media'),
+                'title': compat_urllib_parse_unquote_plus(playerdata_json.get('title')),
+                'description': compat_urllib_parse_unquote_plus(playerdata_json.get('description')),
+                'duration': int_or_none(playerdata_json.get('dur')),
+                'upload_date': upload_date,
+                'thumbnail': self._og_search_thumbnail(webpage)
             }
         else:
             return {}
+
 
 class NDTVSportsIE(InfoExtractor):
     _VALID_URL = r'https?://sports\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
 
     _TESTS = [
-       {
-           'url': 'https://sports.ndtv.com/cricket/videos/2nd-t20i-rock-thrown-at-australia-cricket-team-bus-after-win-over-india-469764',
-           'info_dict': {
-               'id': '469764',
-               'ext': 'mp4',
-               'upload_date': '20171011',
-               'description': 'md5:01890be797710959956f5cc7ff9f8841',
-               'title': '2nd T20I: Rock Thrown at Australia Cricket Team Bus After Win Over India',
-           }
-       },
+        {
+            'url': 'https://sports.ndtv.com/cricket/videos/2nd-t20i-rock-thrown-at-australia-cricket-team-bus-after-win-over-india-469764',
+            'info_dict': {
+                'id': '469764',
+                'ext': 'mp4',
+                'upload_date': '20171011',
+                'description': 'md5:01890be797710959956f5cc7ff9f8841',
+                'title': '2nd T20I: Rock Thrown at Australia Cricket Team Bus After Win Over India',
+            }
+        },
     ]
 
     def _real_extract(self, url):
@@ -261,7 +265,7 @@ class NDTVSportsIE(InfoExtractor):
                 'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
                 'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
                 r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-                #upload_date = playerdata_json['date']
+            # upload_date = playerdata_json['date']
             return {
                 'id': playerdata_json.get('id'),
                 'url': playerdata_json.get('media'),
@@ -274,20 +278,21 @@ class NDTVSportsIE(InfoExtractor):
         else:
             return {}
 
+
 class NDTVGadgetsIE(InfoExtractor):
     _VALID_URL = r'https?://gadgets\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
 
     _TESTS = [
-       {
-           'url': 'http://gadgets.ndtv.com/videos/uncharted-the-lost-legacy-review-465568',
-           'info_dict': {
-               'id': '465568',
-               'ext': 'mp4',
-               'upload_date': '20170816',
-               'description': 'md5:efa289d96ca60db118763c24fee6b295',
-               'title': 'Uncharted: The Lost Legacy Review',
-           }
-       },
+        {
+            'url': 'http://gadgets.ndtv.com/videos/uncharted-the-lost-legacy-review-465568',
+            'info_dict': {
+                'id': '465568',
+                'ext': 'mp4',
+                'upload_date': '20170816',
+                'description': 'md5:efa289d96ca60db118763c24fee6b295',
+                'title': 'Uncharted: The Lost Legacy Review',
+            }
+        },
     ]
 
     def _real_extract(self, url):
@@ -303,7 +308,7 @@ class NDTVGadgetsIE(InfoExtractor):
                 'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
                 'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
                 r'datePublished"\s*:\s*"([^"]+)"', webpage, 'upload date', fatal=False))
-                #upload_date = playerdata_json['date']
+            # upload_date = playerdata_json['date']
             return {
                 'id': playerdata_json.get('id'),
                 'url': playerdata_json.get('media'),
@@ -321,16 +326,16 @@ class NDTVDoctorIE(InfoExtractor):
     _VALID_URL = r'https?://doctor\.ndtv\.com/(?:[^/]+/)*videos?/?(?:[^/]+/)*[^/?^&]+-(?P<id>\d+)'
 
     _TESTS = [
-       {
-           'url': 'https://doctor.ndtv.com/videos/top-health-stories-of-the-week-467396',
-           'info_dict': {
-               'id': '467396',
-               'ext': 'mp4',
-               'upload_date': '20170909',
-               'description': 'md5:e6775da155f14a1be31b878b2db39ff3',
-               'title': 'Top Health Stories Of The Week',
-           }
-       },
+        {
+            'url': 'https://doctor.ndtv.com/videos/top-health-stories-of-the-week-467396',
+            'info_dict': {
+                'id': '467396',
+                'ext': 'mp4',
+                'upload_date': '20170909',
+                'description': 'md5:e6775da155f14a1be31b878b2db39ff3',
+                'title': 'Top Health Stories Of The Week',
+            }
+        },
     ]
 
     def _real_extract(self, url):
@@ -341,16 +346,15 @@ class NDTVDoctorIE(InfoExtractor):
         #             "rtmp": true / false,
 
         title = compat_urllib_parse_unquote_plus(
-                self._search_regex(r"\"title\"\s*:\s*\"([^\"]+)\"", webpage, 'title', default=None) or
-                self._og_search_title(webpage))
+            self._search_regex(r"\"title\"\s*:\s*\"([^\"]+)\"", webpage, 'title', default=None) or
+            self._og_search_title(webpage))
 
         video_url = self._search_regex(
-                r"\"media\"\s*:\s*\"([^\"]+)\"", webpage, 'video filename')
+            r"\"media\"\s*:\s*\"([^\"]+)\"", webpage, 'video filename')
 
         duration = parse_duration(self._search_regex(
             r"\"dur\"s*:\s*\"([^\"]+)\"", webpage, 'duration', fatal=False))
 
-        # "sports", "doctor", "swirlster" sub-sites don't have 'publish-date'
         upload_date = unified_strdate(self._html_search_meta(
             'publish-date', webpage, 'upload date', default=None) or self._html_search_meta(
             'uploadDate', webpage, 'upload date', default=None) or self._search_regex(
@@ -360,11 +364,11 @@ class NDTVDoctorIE(InfoExtractor):
         print description
 
         return {
-                'id': video_id,
-                'url': video_url,
-                'title': title,
-                'description': description,
-                'thumbnail': self._og_search_thumbnail(webpage),
-                'duration': duration,
-                'upload_date': upload_date,
+            'id': video_id,
+            'url': video_url,
+            'title': title,
+            'description': description,
+            'thumbnail': self._og_search_thumbnail(webpage),
+            'duration': duration,
+            'upload_date': upload_date,
         }
