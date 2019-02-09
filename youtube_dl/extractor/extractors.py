@@ -716,7 +716,15 @@ from .ndr import (
     NDREmbedIE,
     NJoyEmbedIE,
 )
-from .ndtv import NDTVIE
+from .ndtv import (
+    NDTVIE,
+    NDTVKhabarIE,
+    NDTVAutoIE,
+    NDTVMoviesFoodSwirlsterIE,
+    NDTVSportsIE,
+    NDTVGadgetsIE,
+    NDTVDoctorIE,
+)
 from .netzkino import NetzkinoIE
 from .nerdcubed import NerdCubedFeedIE
 from .neteasemusic import (
